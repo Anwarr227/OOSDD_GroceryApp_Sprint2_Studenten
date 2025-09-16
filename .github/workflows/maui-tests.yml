@@ -1,5 +1,5 @@
 name: Unit Tests
- 
+
 on:
   push:
     branches:
@@ -11,22 +11,24 @@ on:
     branches:
       - main
       - develop
- 
+
 jobs:
   test:
-    runs-on: ubuntu-latest   # sneller & goedkoper dan macOS
+    runs-on: ubuntu-latest   
     steps:
-      - uses: actions/checkout@v4
- 
-      - uses: actions/setup-dotnet@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
- 
+
       - name: Restore dependencies
-        run: dotnet restore
- 
+        run: dotnet restore /p:TargetFramework=net8.0
+
       - name: Build
-        run: dotnet build --configuration Release --no-restore
- 
+        run: dotnet build --configuration Release -f net8.0 --no-restore
+
       - name: Run unit tests
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        run: dotnet test --configuration Release -f net8.0 --no-build --verbosity normal
